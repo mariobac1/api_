@@ -14,10 +14,10 @@ func (uc UseCase) Create(p *models.Community) error {
 	return uc.storage.Create(p)
 }
 
-func (uc UseCase) GetAll() (models.Communities, error) {
-	return uc.storage.GetAll()
-}
+// func (uc UseCase) GetAll() (models.Communities, error) {
+// 	return uc.storage.GetAll()
+// }
 
-func (uc UseCase) GetByID(ID uint) (models.Community, error) {
-	return uc.storage.GetByID(ID)
-}
+// func (uc UseCase) GetByID(ID uint) (models.Community, error) {
+// 	return uc.storage.GetByID(ID)
+// }

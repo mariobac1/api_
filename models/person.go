@@ -3,12 +3,12 @@ package models
 import "time"
 
 type Person struct {
-	ID          uint
-	Name        string
-	Age         uint8
-	Communities Communities
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID          uint      `json:"id"`
+	Name        string    `json:"name"`
+	Age         uint8     `json:"age"`
+	Communities uint      `json:"communities"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type Persons []*Person

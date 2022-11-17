@@ -18,6 +18,6 @@ func (uc UseCase) GetAll() (models.Persons, error) {
 	return uc.storage.GetAll()
 }
 
-func (uc UseCase) GetByID(ID uint) (models.Person, error) {
-	return uc.storage.GetByID(ID)
-}
+// func (uc UseCase) GetByID(ID uint) (models.Person, error) {
+// 	return uc.storage.GetByID(ID)
+// }

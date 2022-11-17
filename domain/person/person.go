@@ -9,12 +9,21 @@ import "github.com/mariobac1/api_/models"
 type Storage interface {
 	Migrate() error
 	Create(*models.Person) error
-	Update(*models.Person) error
+	//Update(*models.Person) error
 	GetAll() (models.Persons, error)
-	GetByID(ID uint) (models.Person, error)
-	Delete(ID uint) error
+	//GetByID(ID uint) (models.Person, error)
+	//Delete(ID uint) error
 }
 
 //******************
 //**** PORT IN ****
 //******************
+
+type Person interface {
+	Migrate() error
+	Create(*models.Person) error
+	Update(*models.Person) error
+	GetAll() (models.Persons, error)
+	GetByID(ID uint) (models.Person, error)
+	Delete(ID uint) error
+}

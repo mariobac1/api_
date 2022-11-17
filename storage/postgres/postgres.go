@@ -3,9 +3,17 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"os"
 
 	_ "github.com/lib/pq"
+)
+
+const (
+	DB_USER = "postgres"
+	DB_PASS = "Enrique1!"
+	DB_HOST = "localhost"
+	DB_PORT = "5432"
+	DB_NAME = "api_prueba"
+	DB_SSL  = "disable"
 )
 
 var (
@@ -13,12 +21,12 @@ var (
 )
 
 func NewPostgresDB() (*sql.DB, error) {
-	userName := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASS")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	database := os.Getenv("DB_NAME")
-	sslMode := os.Getenv("DB_SSL")
+	userName := DB_USER
+	password := DB_PASS
+	host := DB_HOST
+	port := DB_PORT
+	database := DB_NAME
+	sslMode := DB_SSL
 
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=%s",

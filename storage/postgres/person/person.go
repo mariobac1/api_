@@ -12,19 +12,28 @@ type scanner interface {
 }
 
 const (
-	MigratePerson = `CREATE TABLE IF NOT EXIST persons(
+	// MigratePerson = `CREATE TABLE IF NOT EXISTS persons(
+	// 	id SERIAL NOT NULL,
+	// 	name VARCHAR(50) NOT NULL,
+	// 	age INT NOT NULL,
+	// 	communities_id INT NOT NULL,
+	// 	created_at TIMESTAMP NOT NULL DEFAULT now(),
+	// 	updated_at TIMESTAMP,
+	// 	CONSTRAINT persons_id_pk PRIMARY KEY (id),
+	// 	CONSTRAINT persons_communities_id_fk FOREIGN KEY (communities_id)
+	// 	REFERENCES communities (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+	// )`
+	MigratePerson = `CREATE TABLE IF NOT EXISTS persons(
 		id SERIAL NOT NULL,
 		name VARCHAR(50) NOT NULL,
 		age INT NOT NULL,
 		communities_id INT NOT NULL,
-		created_at TIMESTAMP NOT NULL DAFAULT now(),
+		created_at TIMESTAMP NOT NULL DEFAULT now(),
 		updated_at TIMESTAMP,
-		CONSTRAINT persons_id_pk PRIMARY KEY (id),
-		CONSTRAINT persons_communities_id_fk FOREING KEY (mommunities_id) 
-		REFERENCE communities (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+		CONSTRAINT persons_id_pk PRIMARY KEY (id)
 	)`
-	CreatePerson = `INSERT INTO persons (name, age, communities, created_at)
-		VALUES($1, $2, $3, $4) RETURNING id`
+	CreatePerson = `INSERT INTO persons (name, age, communities_id)
+		VALUES($1, $2, $3) RETURNING id`
 	GetAllPerson = `SELECT id, name, age, communities, created_at, updated_at
 		FROM persons`
 	GetByIDPerson = GetAllPerson + `WHERE id = $1`
@@ -67,7 +76,6 @@ func (p *person) Create(m *models.Person) error {
 		m.Name,
 		m.Age,
 		m.Communities,
-		m.CreatedAt,
 	).Scan(&m.ID)
 	if err != nil {
 		return err
