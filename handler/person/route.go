@@ -10,4 +10,5 @@ func RoutePerson(mux *http.ServeMux, usecase person.Storage) {
 	h := newHandler(usecase)
 
 	mux.HandleFunc("/v1/persons/create", h.create)
+	mux.HandleFunc("/v1/persons/all", h.getAll)
 }

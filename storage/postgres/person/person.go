@@ -34,10 +34,10 @@ const (
 	)`
 	CreatePerson = `INSERT INTO persons (name, age, communities_id)
 		VALUES($1, $2, $3) RETURNING id`
-	GetAllPerson = `SELECT id, name, age, communities, created_at, updated_at
+	GetAllPerson = `SELECT id, name, age, communities_id, created_at, updated_at
 		FROM persons`
 	GetByIDPerson = GetAllPerson + `WHERE id = $1`
-	Updateperson  = `UPDATE persons SET name = $1, age = $2,  communities = $3,
+	Updateperson  = `UPDATE persons SET name = $1, age = $2,  communities_id = $3,
 		updated_at = $4, WHERE id = $5`
 )
 
@@ -121,6 +121,7 @@ func scanRowPerson(s scanner) (*models.Person, error) {
 	err := s.Scan(
 		&m.ID,
 		&m.Name,
+		&m.Age,
 		&m.Communities,
 		&m.CreatedAt,
 		&updatedAtNull,

@@ -43,3 +43,30 @@ func (h *handler) create(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message_type": "message", "message": "Person created Ok"}`))
 
 }
+
+func (h *handler) getAll(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"message_type": "error", "message": "Method not permit"}`))
+		return
+	}
+
+	resp, err := h.usecase.GetAll()
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message_type": "error", "message": "An issue occurs when try get all persons"}`))
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(&resp)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message_type": "error", "message": "An issue occurs when try encoder persons"}`))
+		return
+	}
+}
