@@ -35,10 +35,11 @@ const (
 	CreatePerson = `INSERT INTO persons (name, age, communities_id)
 		VALUES($1, $2, $3) RETURNING id`
 	GetAllPerson = `SELECT id, name, age, communities_id, created_at, updated_at
-		FROM persons`
+		FROM persons ORDER BY id`
 	GetByIDPerson = GetAllPerson + `WHERE id = $1`
-	Updateperson  = `UPDATE persons SET name = $1, age = $2,  communities_id = $3,
-		updated_at = $4, WHERE id = $5`
+	UpdatePerson  = `UPDATE persons SET name = $1, age = $2,  communities_id = $3,
+		updated_at = $4 WHERE id = $5`
+	DeletePerson = `DELETE FROM persons WHERE id = $1`
 )
 
 type person struct {
@@ -112,6 +113,74 @@ func (p *person) GetAll() (models.Persons, error) {
 
 	}
 	return ms, nil
+}
+
+func (p *person) GetByID(id uint) (*models.Person, error) {
+	stmt, err := p.db.Prepare(GetByIDPerson)
+	if err != nil {
+		return &models.Person{}, err
+	}
+	defer stmt.Close()
+
+	return scanRowPerson(stmt.QueryRow(id))
+}
+
+// Update
+func (p *person) Update(m *models.Person) error {
+	stmt, err := p.db.Prepare(UpdatePerson)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	res, err := stmt.Exec(
+		m.Name,
+		m.Age,
+		m.Communities,
+		m.UpdatedAt,
+		m.ID,
+	)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no existe el id: %d: %w", m.ID, models.ErrIDPersonDoesNotExists)
+	}
+
+	fmt.Printf("Se actualizó la persona correctamente")
+	return nil
+
+}
+
+// Update implement the interface product.Storage
+func (p *person) Delete(id uint) error {
+	stmt, err := p.db.Prepare(DeletePerson)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	resp, err := stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := resp.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no existe el id: %d: %w", id, models.ErrIDPersonDoesNotExists)
+	}
+
+	fmt.Println("Se eliminó la persona correctamente")
+	return nil
 }
 
 func scanRowPerson(s scanner) (*models.Person, error) {
