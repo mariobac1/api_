@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/mariobac1/api_/authorization"
 	"github.com/mariobac1/api_/handler/community"
 	"github.com/mariobac1/api_/handler/person"
 	"github.com/mariobac1/api_/storage/postgres"
@@ -12,6 +13,11 @@ import (
 )
 
 func main() {
+	err := authorization.LoadFiles("certificates/app.rsa", "certificates/app.rsa.pub")
+	if err != nil {
+		log.Fatalf("We can't load the certificates: %v", err)
+	}
+
 	connection, _ := postgres.NewPostgresDB()
 
 	store := postPerson.New(connection)
@@ -22,7 +28,7 @@ func main() {
 		log.Fatalf("commu.Migrate: %v", err)
 	}
 
-	if err := store.Migrate(); err != nil {
+	if err = store.Migrate(); err != nil {
 		log.Fatalf("store.Migrate: %v", err)
 	}
 
@@ -31,7 +37,7 @@ func main() {
 	community.RouteCommunity(mux, commu)
 
 	log.Println("Server in port 8080 start")
-	err := http.ListenAndServe(":8080", mux)
+	err = http.ListenAndServe(":8080", mux)
 	if err != nil {
 		log.Printf("Error in server %v\n", err)
 	}
