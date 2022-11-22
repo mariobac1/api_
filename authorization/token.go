@@ -9,7 +9,7 @@ import (
 )
 
 // GenerateToken
-func GeneratoToken(data *models.Login) (string, error) {
+func GenerateToken(data *models.Login) (string, error) {
 	claim := models.Claim{
 		Email: data.Email,
 		StandardClaims: jwt.StandardClaims{
@@ -18,7 +18,7 @@ func GeneratoToken(data *models.Login) (string, error) {
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claim)
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claim)
 	signedToken, err := token.SignedString(signKey)
 	if err != nil {
 		return "", err

@@ -37,6 +37,6 @@ func (uc UseCase) Update(m *models.Person) error {
 	return uc.storage.Update(m)
 }
 
-// func (uc UseCase) GetByID(ID uint) (models.Person, error) {
-// 	return uc.storage.GetByID(ID)
-// }
+func (uc UseCase) GetByID(ID uint) (*models.Person, error) {
+	return uc.storage.GetByID(ID)
+}

@@ -1,11 +1,18 @@
 package models
 
-import "github.com/golang-jwt/jwt/v4"
+import (
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
+)
 
 // Login
 type Login struct {
-	Email    string `json:"email"`
-	Password string `json: "password"`
+	ID        uint      `json:"id"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // Claim
