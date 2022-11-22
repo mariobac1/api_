@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	DB_USER = "postgres"
-	DB_PASS = "Enrique1!"
+	DB_USER = "USER"
+	DB_PASS = "PASSWORD"
 	DB_HOST = "localhost"
 	DB_PORT = "5432"
 	DB_NAME = "api_prueba"
